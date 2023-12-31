@@ -1,0 +1,13 @@
+<!-- Template engine that flask uses is called Jinja -->
+{% extends "layout.html" %} 
+{% block content %}
+    <!-- code blocks start and end with -->
+    {% for post in posts %}
+        <div>
+        <h1>{{ post["title"] }}</h1>
+        <p>{{ post["content"] }}</p>
+        <p>By: {{ post["author"] }} on <strong>{{ post['date_posted'] }}</strong></p>
+        <hr />
+        </div>
+    {% endfor %}
+{% endblock content %}
