@@ -1,9 +1,12 @@
 # importing the flask class here
-from flask import Flask,render_template,url_for
+from flask import Flask, render_template, url_for, flash, redirect
+from forms import RegistrationForm,LoginForm
 
 # create variable app and settting it to an instance of the Flask class. Variable passed is needed so py can know 
 # where to look for resources
 app = Flask(__name__)
+
+app.config["SECRET_KEY"] = "1c66c7af6efab15568e1247a9f40df92"
 
 posts = [
     {
@@ -28,13 +31,26 @@ posts = [
 
 @app.route("/")
 @app.route("/home")
-def index():
+def home():
     # to render templates create template folder with the files
     return render_template("home.html", posts=posts, title="Home Page") # an easy way to pass the posts to our templates
 
 @app.route("/about")
 def about():
     return render_template("about.html", title="About-title")
+
+@app.route("/register", methods = ['GET','POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f"Account created for {form.username.data}! ","success")
+        return redirect(url_for('home'))
+    return render_template('register.html', title="Register", form=form)
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    return render_template('login.html', title="Login", form=form)
 
 # another option for the env variables to enable debugging
 
